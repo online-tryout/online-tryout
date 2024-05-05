@@ -7,16 +7,16 @@ import { cookies } from "next/headers";
 export async function signin(
   email: string,
   password: string,
-): Promise<{ accessToken: string; user: User; message: string }> {
+): Promise<{ token: string, message: string }> {
   "use server";
+  password = btoa(password);
   try {
     const { data } = await serverAxios.post<{
-      user: User;
-      accessToken: string;
+      token: string;
       message: string;
-    }>("/api/auth/signin", { email, password });
+    }>("http://localhost:8000/api/auth/login", { email, password });
 
-    cookies().set("accessToken", data.accessToken);
+    cookies().set("token", data.token);
     return data;
   } catch (error) {
     throw error;

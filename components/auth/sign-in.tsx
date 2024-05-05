@@ -45,11 +45,11 @@ const SignIn: FC = () => {
   ) => {
     setSubmitting(true);
     try {
-      const { accessToken, user, message } = await signin(
+      const { token, message } = await signin(
         values.email,
         values.password,
       );
-      successfullyLoginHandler(user, accessToken, message);
+      successfullyLoginHandler( token, message);
     } catch (err: any) {
       errorLoginHandler();
     }
@@ -80,17 +80,10 @@ const SignIn: FC = () => {
   };
 
   const successfullyLoginHandler = (
-    user: User,
-    accessToken: string,
+    token: string,
     message: string,
   ) => {
-    setUser({
-      name: user.name,
-      id: user.id,
-      email: user.email,
-      image: user.avatar,
-    });
-    setAccessToken(accessToken);
+    setAccessToken(token);
     toast({
       title: "Success",
       description: message ?? "success to sign in",
