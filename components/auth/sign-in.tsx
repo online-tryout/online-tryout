@@ -16,7 +16,7 @@ import useAuthStore from "@/store/useAuthStore";
 import { google, signin } from "@/app/auth/action";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter, useSearchParams } from "next/navigation";
-import { User } from "@/model/user";
+import { User } from "@/models/user";
 import { useToast } from "../ui/use-toast";
 
 interface LoginForm {
@@ -45,11 +45,11 @@ const SignIn: FC = () => {
   ) => {
     setSubmitting(true);
     try {
-      const { token, message } = await signin(
+      const { accessToken, user, message } = await signin(
         values.email,
         values.password,
       );
-      successfullyLoginHandler( token, message);
+      successfullyLoginHandler(user, accessToken, message);
     } catch (err: any) {
       errorLoginHandler();
     }
@@ -80,10 +80,17 @@ const SignIn: FC = () => {
   };
 
   const successfullyLoginHandler = (
-    token: string,
+    user: User,
+    accessToken: string,
     message: string,
   ) => {
-    setAccessToken(token);
+    setUser({
+      name: user.name,
+      id: user.id,
+      email: user.email,
+      image: user.avatar,
+    });
+    setAccessToken(accessToken);
     toast({
       title: "Success",
       description: message ?? "success to sign in",

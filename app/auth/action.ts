@@ -1,22 +1,23 @@
 "use server";
 
-import { User } from "@/model/user";
+import { User } from "@/models/user";
 import { serverAxios } from "@/utils/axios";
 import { cookies } from "next/headers";
 
 export async function signin(
   email: string,
   password: string,
-): Promise<{ token: string, message: string }> {
+): Promise<{ token: string; user: User; message: string }> {
   "use server";
-  password = btoa(password);
   try {
+    password = btoa(password)
     const { data } = await serverAxios.post<{
+      user: User;
       token: string;
       message: string;
     }>("http://localhost:8000/api/auth/login", { email, password });
 
-    cookies().set("token", data.token);
+    cookies().set("accessToken", data.token);
     return data;
   } catch (error) {
     throw error;
