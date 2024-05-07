@@ -10,8 +10,8 @@ export async function middleware(request: NextRequest) {
     const payload = parseJwtPayload(accessToken?.value ?? "");
     return (
       payload !== null &&
-      payload.expiredAt !== null &&
-      new Date(payload.expiredAt) > new Date()
+      payload.exp !== null &&
+      new Date(payload.exp) > new Date()
     );
   };
   const publicRoute = ["/", "/auth"];

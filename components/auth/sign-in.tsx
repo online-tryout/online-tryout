@@ -16,7 +16,7 @@ import useAuthStore from "@/store/useAuthStore";
 import { google, signin } from "@/app/auth/action";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter, useSearchParams } from "next/navigation";
-import { User } from "@/model/user";
+import { User } from "@/models/user";
 import { useToast } from "../ui/use-toast";
 
 interface LoginForm {
@@ -96,7 +96,7 @@ const SignIn: FC = () => {
       description: message ?? "success to sign in",
       variant: "default",
     });
-    const redirect = decodeURIComponent(query.get("redirect") ?? "/explore");
+    const redirect = decodeURIComponent(query.get("redirect") ?? "/dashboard");
     router.push(redirect);
   };
 

@@ -51,7 +51,7 @@ const Home: FC = () => {
                 variant={"outline"}
                 className="flex gap-2 px-4"
                 size={"lg"}
-                onClick={() => routes.push("/explore")}
+                onClick={() => routes.push("/dashboard")}
               >
                 <WebIcon />
                 Web

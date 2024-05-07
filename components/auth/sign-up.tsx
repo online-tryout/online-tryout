@@ -15,7 +15,7 @@ import { FC } from "react";
 import useAuthStore from "@/store/useAuthStore";
 import { google, signup } from "@/app/auth/action";
 import { useGoogleLogin } from "@react-oauth/google";
-import { User } from "@/model/user";
+import { User } from "@/models/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 
@@ -98,7 +98,7 @@ const SignUp: FC = () => {
       description: message ?? "success to sign up",
       variant: "default",
     });
-    const redirect = decodeURIComponent(query.get("redirect") ?? "/explore");
+    const redirect = decodeURIComponent(query.get("redirect") ?? "/dashboard");
     router.push(redirect);
   };
 

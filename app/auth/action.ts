@@ -1,6 +1,6 @@
 "use server";
 
-import { User } from "@/model/user";
+import { User } from "@/models/user";
 import { serverAxios } from "@/utils/axios";
 import { cookies } from "next/headers";
 
@@ -10,11 +10,12 @@ export async function signin(
 ): Promise<{ accessToken: string; user: User; message: string }> {
   "use server";
   try {
+    password = btoa(password)
     const { data } = await serverAxios.post<{
       user: User;
       accessToken: string;
       message: string;
-    }>("/api/auth/signin", { email, password });
+    }>("/api/auth/login", { email, password });
 
     cookies().set("accessToken", data.accessToken);
     return data;
@@ -51,7 +52,7 @@ export async function signup(
       user: User;
       accessToken: string;
       message: string;
-    }>("/api/auth/signup", { email, password, name });
+    }>("/api/auth/register", { email, password, name });
 
     cookies().set("accessToken", data.accessToken);
     return data;
