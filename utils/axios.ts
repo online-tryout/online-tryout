@@ -1,11 +1,7 @@
 import axios from "axios";
 
 const serverAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_CONTAINER_BACKEND,
+  baseURL: process.env.NEXT_PUBLIC_API,
 });
 
-const storageAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_CONTAINER_STORAGE,
-});
-
-export { serverAxios, storageAxios };
+export { serverAxios };

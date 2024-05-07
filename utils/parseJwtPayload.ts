@@ -1,8 +1,8 @@
 interface Payload {
   id: string;
-  email: string;
-  issuedAt: string;
-  expiredAt: string;
+  name: string;
+  role_id: number;
+  exp: Date;
 }
 
 const parseJwtPayload = (token: string): Payload | null => {
@@ -12,6 +12,8 @@ const parseJwtPayload = (token: string): Payload | null => {
     const jsonPayload = Buffer.from(base64, "base64").toString("utf-8");
     return JSON.parse(jsonPayload);
   } catch (e) {
+    // TODO: Fix middleware
+    console.log(e)
     return null;
   }
 };

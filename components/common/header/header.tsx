@@ -64,7 +64,7 @@ export function Header() {
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <nav className="flex items-center gap-2">
             {pathname === "/" ? (
-              <Button onClick={() => routes.push("/explore")}>Explore</Button>
+              <Button onClick={() => routes.push("/dashboard")}>dashboard</Button>
             ) : (
               <>
                 <ModeToggle />

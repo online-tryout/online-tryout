@@ -15,7 +15,7 @@ export async function signin(
       user: User;
       accessToken: string;
       message: string;
-    }>("http://localhost:8000/api/auth/login", { email, password });
+    }>("/api/auth/login", { email, password });
 
     cookies().set("accessToken", data.accessToken);
     return data;
@@ -52,7 +52,7 @@ export async function signup(
       user: User;
       accessToken: string;
       message: string;
-    }>("/api/auth/signup", { email, password, name });
+    }>("/api/auth/register", { email, password, name });
 
     cookies().set("accessToken", data.accessToken);
     return data;
