@@ -45,16 +45,15 @@ export async function signup(
   email: string,
   name: string,
   password: string,
-): Promise<{ accessToken: string; user: User; message: string }> {
+): Promise<{ message: string }> {
   "use server";
   try {
+    password = btoa(password);
+    const role_id = 2;
     const { data } = await serverAxios.post<{
-      user: User;
-      accessToken: string;
       message: string;
-    }>("/api/auth/register", { email, password, name });
+    }>("/api/auth/register", { email, password, name, role_id });
 
-    cookies().set("accessToken", data.accessToken);
     return data;
   } catch (error) {
     throw error;

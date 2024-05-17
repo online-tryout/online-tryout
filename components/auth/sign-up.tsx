@@ -48,12 +48,12 @@ const SignUp: FC = () => {
   ) => {
     setSubmitting(true);
     try {
-      const { accessToken, user, message } = await signup(
+      const { message } = await signup(
         values.email,
         values.name,
         values.password,
       );
-      successfullyLoginHandler(user, accessToken, message);
+      successfullyLoginHandler(message);
     } catch (err: any) {
       errorLoginHandler();
     }
@@ -64,7 +64,7 @@ const SignUp: FC = () => {
     onSuccess: async ({ access_token: googleToken }) => {
       try {
         const { accessToken, user, message } = await google(googleToken);
-        successfullyLoginHandler(user, accessToken, message);
+        successfullyLoginHandler(message);
       } catch (err: any) {}
     },
     onError: () => {
@@ -82,17 +82,8 @@ const SignUp: FC = () => {
   };
 
   const successfullyLoginHandler = (
-    user: User,
-    accessToken: string,
     message: string,
   ) => {
-    setUser({
-      name: user.name,
-      id: user.id,
-      email: user.email,
-      image: user.avatar,
-    });
-    setAccessToken(accessToken);
     toast({
       title: "Success",
       description: message ?? "success to sign up",
