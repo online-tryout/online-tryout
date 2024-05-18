@@ -41,13 +41,13 @@ const SignIn: FC = () => {
   const { toast } = useToast();
   const signInWithCredentialHandler = async (
     values: LoginForm,
-    { setSubmitting }: FormikHelpers<LoginForm>,
+    { setSubmitting }: FormikHelpers<LoginForm>
   ) => {
     setSubmitting(true);
     try {
       const { accessToken, user, message } = await signin(
         values.email,
-        values.password,
+        values.password
       );
       successfullyLoginHandler(user, accessToken, message);
     } catch (err: any) {
@@ -82,7 +82,7 @@ const SignIn: FC = () => {
   const successfullyLoginHandler = (
     user: User,
     accessToken: string,
-    message: string,
+    message: string
   ) => {
     setUser({
       name: user.name,

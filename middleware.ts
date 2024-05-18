@@ -8,10 +8,11 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isPayloadValid = () => {
     const payload = parseJwtPayload(accessToken?.value ?? "");
+
     return (
       payload !== null &&
       payload.exp !== null &&
-      new Date(payload.exp) > new Date()
+      payload.exp > Math.floor(Date.now() / 1000)
     );
   };
   const publicRoute = ["/", "/auth"];
@@ -34,7 +35,7 @@ export async function middleware(request: NextRequest) {
   // If the user is valid and a redirect query exists, redirect them
   if (isPayloadValid() && redirectQuery) {
     return NextResponse.redirect(
-      new URL(decodeURIComponent(redirectQuery), request.url),
+      new URL(decodeURIComponent(redirectQuery), request.url)
     );
   }
 

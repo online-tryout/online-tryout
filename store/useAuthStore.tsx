@@ -11,7 +11,7 @@ interface User {
 interface AuthStore {
   user?: User | null;
   accessToken?: string | null;
-  expires?: Date | null;
+  expires?: number | null;
   mode: "dark" | "light";
   setUser: (user: User) => void;
   updateUser: (user: User, data: Partial<User>) => void;
@@ -37,9 +37,8 @@ const useAuthStore = create<AuthStore>()(
           expires: parseJwtPayload(accessToken)?.exp,
         }),
       getIsAuthenticated: () => {
-        return get().expires
-          ? new Date() < (get().expires ?? new Date())
-          : false;
+        const exp = get().expires;
+        return exp ? exp > Math.floor(Date.now() / 1000) : false;
       },
       setMode: (mode: "dark" | "light") => {
         set({
@@ -56,8 +55,8 @@ const useAuthStore = create<AuthStore>()(
     {
       name: "auth",
       storage: createJSONStorage(() => sessionStorage),
-    },
-  ),
+    }
+  )
 );
 
 export default useAuthStore;
