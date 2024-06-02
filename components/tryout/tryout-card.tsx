@@ -10,8 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Module } from "@/models/module";
 
-export const TryoutCard = () => {
+interface TryoutQuestionsProps {
+    data: Module;
+}
+
+export const TryoutCard: React.FC<TryoutQuestionsProps>= ({ data }) => {
+    console.log(data)
     const [selectedOption, setSelectedOption] = useState<string>("");
 
     const selectHandler = (option: string) => {

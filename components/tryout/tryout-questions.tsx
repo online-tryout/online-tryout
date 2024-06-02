@@ -9,11 +9,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Module } from "@/models/module";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react";
 
-export const TryoutQuestions = () => {
+interface TryoutQuestionsProps {
+    data: Module;
+}
 
+export const TryoutQuestions: React.FC<TryoutQuestionsProps> = ({ data }) => {
+    console.log(data)
+    const [selectedQuestion, setSelectedQuestion] = useState<number>(1);
+
+    const handleQuestionSelection = (question: number) => {
+        setSelectedQuestion(question);
+    }
+    
     return (
         <Card className="w-[350px]">
             <CardHeader>
@@ -21,12 +33,17 @@ export const TryoutQuestions = () => {
             </CardHeader>
             <CardContent>
                 <div className="grid grid-cols-5 gap-4">
-                    <Button variant="outline">1</Button>
-                    <Button variant="outline">2</Button>
-                    <Button variant="outline">3</Button>
-                    <Button variant="outline">4</Button>
-                    <Button variant="outline">5</Button>
-                    <Button variant="outline">6</Button>
+                    {/* {
+                        data.questions.map((item) => (
+                            <Button 
+                            key={item.question_order}
+                            variant={selectedQuestion == item.question_order? "secondary" : "outline"}
+                            onClick={() => (handleQuestionSelection(item.question_order))}
+                            >
+                                {item.question_order}
+                            </Button>
+                        ))
+                    } */}
                 </div>
             </CardContent>
             <CardFooter className="flex justify-between">
