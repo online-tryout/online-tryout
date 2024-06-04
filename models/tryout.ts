@@ -5,9 +5,9 @@ export interface Tryout {
   title: string;
   price: number;
   status: string;
-  startedAt: Date;
+  started_at: Date;
   endedAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
   modules: Module[];
 }
