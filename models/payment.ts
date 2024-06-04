@@ -1,11 +1,9 @@
-export interface TransactionData {
-  user_id: string;
-  tryout_name: string;
-  tryout_id: string;
+export interface Transaction {
   id: string;
+  user_id: string;
+  tryout_id: string;
   amount: string;
-  bank: string;
-  account_number: string;
+  created_at: Date;
 }
 
 export interface TransactionIntent {

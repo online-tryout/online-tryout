@@ -13,13 +13,19 @@ import {
 } from "../ui/card";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { Transaction } from "@/models/payment";
 
 interface TryOutListProps {
   tryouts: Tryout[];
+  transactions: Transaction[];
 }
 
-const TryoutList: FC<TryOutListProps> = ({ tryouts }) => {
+const TryoutList: FC<TryOutListProps> = ({ tryouts, transactions }) => {
   const { user } = useAuthStore();
+
+  const myTryouts = transactions.map((t) => {
+    return tryouts.find((to) => to.id === t.tryout_id);
+  });
 
   return (
     <div className="w-full min-h-screen px-8 flex flex-col gap-8">
@@ -42,9 +48,13 @@ const TryoutList: FC<TryOutListProps> = ({ tryouts }) => {
                 </CardHeader>
                 <CardContent></CardContent>
                 <CardFooter>
-                  <Button size={"sm"} variant={"default"}>
-                    <Link href={`/payment/${to.id}`}>Buy</Link>
-                  </Button>
+                  {myTryouts.includes(to) ? (
+                    <Button disabled>Bought</Button>
+                  ) : (
+                    <Button asChild size={"sm"} variant={"default"}>
+                      <Link href={`/payment/${to.id}`}>Buy</Link>
+                    </Button>  
+                  )}
                 </CardFooter>
               </Card>
             );
@@ -55,6 +65,21 @@ const TryoutList: FC<TryOutListProps> = ({ tryouts }) => {
         <div className="pb-4">
           <div className="text-2xl">Tryout saya</div>
           <div>Berikut adalah daftar tryout kamu!</div>
+          <div className="grid grid-cols-4 gap-4">
+          {myTryouts.map((to) => {
+            return (
+              <Card key={to?.id + "-mine"}>
+                <CardHeader>
+                  <CardTitle>{to?.title}</CardTitle>
+                  <CardDescription>Rp{to?.price.toLocaleString()}</CardDescription>
+                </CardHeader>
+                <CardContent></CardContent>
+                <CardFooter>
+                </CardFooter>
+              </Card>
+            );
+          })}
+        </div>
         </div>
         <div className="grid grid-rows-2"></div>
       </section>

@@ -1,17 +1,12 @@
+import { Transaction } from "@/models/payment";
 import { Tryout } from "@/models/tryout";
 import { serverAxios } from "@/utils/axios";
 import { cookies } from "next/headers";
 
-export async function getListTryout(): Promise<{
-  tryouts: Tryout[];
-  message: string;
-}> {
+export async function getListTryout(): Promise<Tryout[]> {
   "use server";
   try {
-    const { data } = await serverAxios.get<{
-      tryouts: Tryout[];
-      message: string;
-    }>("/api/tryout/data", {
+    const { data } = await serverAxios.get<Tryout[]>("/api/db/tryout", {
       headers: {
         Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
       },
@@ -23,17 +18,11 @@ export async function getListTryout(): Promise<{
   }
 }
 
-export async function getMyTransactions(userId: string): Promise<{
-  transactions: any[];
-  message: string;
-}> {
+export async function getMyTransactions(userId: string): Promise<Transaction[]> {
   "use server";
   try {
     console.log(`/api/payment/transactions/user/${userId}`)
-    const { data } = await serverAxios.get<{
-      transactions: any[];
-      message: string;
-    }>(`/api/payment/transactions/user/${userId}`, {
+    const { data } = await serverAxios.get<Transaction[]>(`/api/payment/transactions/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
       },
