@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { Button } from "../ui/button";
 
 interface TryOutListProps {
   tryouts: Tryout[];
@@ -38,11 +39,11 @@ const TryoutList: FC<TryOutListProps> = ({ tryouts }) => {
                   <CardTitle>{to.title}</CardTitle>
                   <CardDescription>Rp{to.price}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  {/* <p>Started at {to.startedAt.getDay()}</p> */}
-                </CardContent>
+                <CardContent></CardContent>
                 <CardFooter>
-                  <p>Card Footer</p>
+                  <Button size={"sm"} variant={"default"}>
+                    Buy
+                  </Button>
                 </CardFooter>
               </Card>
             );
