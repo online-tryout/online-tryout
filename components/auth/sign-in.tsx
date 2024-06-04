@@ -213,7 +213,12 @@ const SignIn: FC = () => {
           <span
             className="cursor-pointer underline underline-offset-4 hover:text-primary"
             onClick={() => {
-              document.getElementById("sign-up-trigger")?.click();
+              const signUpTrigger = document.getElementById("sign-up-trigger");
+              if (signUpTrigger) {
+                signUpTrigger.click();
+              } else {
+                console.error("Element with ID 'sign-up-trigger' not found.");
+              }
             }}
           >
             Signup

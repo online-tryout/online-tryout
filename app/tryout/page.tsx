@@ -1,5 +1,7 @@
-import Tryout from "@/components/tryout/tryout";
+import TryoutList from "@/components/tryout/to-list";
+import { getListTryout } from "./action";
 
-export default function TryoutPage() {
-  return <Tryout />;
+export default async function TryoutListPage() {
+  const { tryouts } = await getListTryout();
+  return <TryoutList tryouts={tryouts} />;
 }
