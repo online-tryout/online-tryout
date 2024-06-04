@@ -18,6 +18,7 @@ export async function signin(
     }>("/api/auth/login", { email, password });
 
     cookies().set("accessToken", data.accessToken);
+    cookies().set("userId", data.user.id);
     return data;
   } catch (error) {
     throw error;
@@ -35,6 +36,7 @@ export async function google(
       message: string;
     }>("/api/auth/google", { token });
     cookies().set("accessToken", data.accessToken);
+    cookies().set("userId", data.user.id);
     return data;
   } catch (error) {
     throw error;
