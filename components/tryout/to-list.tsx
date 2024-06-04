@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface TryOutListProps {
   tryouts: Tryout[];
@@ -42,7 +43,7 @@ const TryoutList: FC<TryOutListProps> = ({ tryouts }) => {
                 <CardContent></CardContent>
                 <CardFooter>
                   <Button size={"sm"} variant={"default"}>
-                    Buy
+                    <Link href={`/tryout/${to.id}`}>Buy</Link>
                   </Button>
                 </CardFooter>
               </Card>
