@@ -4,25 +4,19 @@ import { FC, useState } from "react";
 import * as Yup from "yup";
 import { ErrorMessage, Form, Formik } from "formik";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import PicturePreview from "./components/picture-preview";
 import { Label } from "@/components/ui/label";
+import { TransactionIntent } from "@/models/payment";
+import { submitPaymentProof, submitTransaction } from "@/app/payment/[tid]/action";
 
 
 interface PaymentInputProps {
   setSubmitSuccess: (value: boolean) => void;
-  data: {
-      userId: string;
-      tryout_name: string;
-      tryout_id: string;
-      transaction_id: string;
-      price: string;
-      bank: string;
-      account_number: string;
-  };
+  data: TransactionIntent;
 }
 
 
@@ -35,15 +29,19 @@ const PaymentInput: FC<PaymentInputProps> = ({ setSubmitSuccess, data }) => {
   });
 
   const submitHandler = async (values: any) => {
-    console.log(values);
-    const data = new FormData();
-    data.append("transaction_id", values.transactionId);
-    data.append("tryout_id", values.tryoutId);
-    data.append("user_id", values.userId);
-    data.append("picture", values.picture);
+    const transactionForm = new FormData();
+    transactionForm.append("tryout_id", values.tryoutId);
+    transactionForm.append("user_id", values.userId);
+    transactionForm.append("amount", values.amount);
+    transactionForm.append("status", "pending");
+    const transactionData = await submitTransaction(values.tryoutId, values.userId, values.amount, "pending");
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
+    const transactionId = transactionData.id;
+    const proofForm = new FormData();
+    proofForm.append("transaction_id", transactionId);
+    proofForm.append("file", values.picture);
+    await submitPaymentProof(proofForm, transactionId);
+
     setSubmitSuccess(true);
     toast({
       title: "Payment Proof Submitted",
@@ -60,7 +58,6 @@ const PaymentInput: FC<PaymentInputProps> = ({ setSubmitSuccess, data }) => {
     });
   }
 
-
   return (
       <div className="flex flex-col sm:flex-row gap-4">
         {proofPreview && (
@@ -73,9 +70,6 @@ const PaymentInput: FC<PaymentInputProps> = ({ setSubmitSuccess, data }) => {
               <CardTitle className="text-2xl font-semibold tracking-tight">
                 {data.tryout_name}
               </CardTitle>
-              <CardDescription className="text-sm text-muted-foreground">
-                {data.transaction_id}
-              </CardDescription>
             </div>
           </CardHeader>
 
@@ -83,7 +77,7 @@ const PaymentInput: FC<PaymentInputProps> = ({ setSubmitSuccess, data }) => {
             <div className="flex flex-col gap-4">
               <div className="flex justify-between gap-2">
                 <p>Price</p>
-                <p>Rp. {data.price}</p>
+                <p>Rp. {data.amount.toLocaleString()}</p>
               </div>
               <div className="flex justify-between gap-2">
                 <p>Bank</p>
@@ -100,9 +94,9 @@ const PaymentInput: FC<PaymentInputProps> = ({ setSubmitSuccess, data }) => {
 
               <Formik
                 initialValues={{
-                  transactionId: data.transaction_id,
                   tryoutId: data.tryout_id,
-                  userId: "1",
+                  userId: data.user_id,
+                  amount: data.amount,
                   picture: null,
                 }}
                 validationSchema={validationSchema}

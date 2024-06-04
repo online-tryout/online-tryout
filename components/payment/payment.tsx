@@ -1,30 +1,55 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import PaymentInput from "./payment-input";
 import PaymentSubmitted from "./payment-submitted";
+import { getTransactionIntent } from "@/app/payment/[tid]/action";
+import { TransactionIntent } from "@/models/payment";
+import { notFound } from "next/navigation";
+import { NextResponse } from "next/server";
 
 
-const Payment: FC = () => {
+const Payment: FC<{tryoutId: string}> = ({ tryoutId }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
+  const [transactionIntent, setTransactionIntent] = useState<TransactionIntent | null>(null);
 
-  const mockedJson = {
-    "userId": "1",
-    "tryout_name": "Try Out SIMAK UI 2025 A LONG NAME FOR TESTING PURPOSES",
-    "tryout_id": "1",
-    "transaction_id": "23E4F5G6H7J8K9L0",
-    "price": "100.123",
-    "bank": "BCA",
-    "account_number": "1234567890",
-  };
+  useEffect(() => {
+    const fetchIntent = async () => {
+      try {
+        const data = await getTransactionIntent(tryoutId);
+        setTransactionIntent(data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
+    };
+
+    fetchIntent();
+  }, []);
 
   return (
     <div className="flex sm:h-[calc(100vh-65px)] w-full items-center justify-center px-4 my-4 sm:m-0">
-      {submitSuccess ? 
-          <PaymentSubmitted data={mockedJson} />
-          : 
-          <PaymentInput data={mockedJson} setSubmitSuccess={setSubmitSuccess} />
-        }
+      {isLoading ? (
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+      ) :
+      (
+        transactionIntent ? (
+          submitSuccess ? (
+            <PaymentSubmitted data={transactionIntent} />
+          ) : (
+            <PaymentInput
+              data={transactionIntent}
+              setSubmitSuccess={setSubmitSuccess}
+            />
+          )
+        ) : (
+          notFound()
+        )
+      )
+      }
     </div>
   );
 };

@@ -2,15 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { TransactionIntent } from "@/models/payment";
 import Link from "next/link";
 import { FC } from "react";
 
 
 interface PaymentSuccessProps {
-  data: {
-    tryout_name: string;
-    transaction_id: string;
-  };
+  data: TransactionIntent;
 }
 
 const PaymentSubmitted: FC<PaymentSuccessProps> = ({ data }) => {
@@ -22,9 +20,6 @@ const PaymentSubmitted: FC<PaymentSuccessProps> = ({ data }) => {
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Payment Submitted
           </CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">
-            {data.transaction_id}
-          </CardDescription>
         </div>
       </CardHeader>
 
@@ -39,7 +34,9 @@ const PaymentSubmitted: FC<PaymentSuccessProps> = ({ data }) => {
 
       <CardFooter>
         <Link href="/" className="flex justify-center w-full">
-          <Button className="w-fit px-8">Back to ???</Button>
+          <Button asChild>
+            <Link href="/tryout">Back to Tryout</Link>
+          </Button>
         </Link>
       </CardFooter>
     </Card>
