@@ -53,7 +53,12 @@ const SignUp: FC = () => {
         values.name,
         values.password,
       );
-      successfullyLoginHandler(message);
+      toast({
+        title: "Success",
+        description: message ?? "success to sign up",
+        variant: "default",
+      });
+      document.getElementById("sign-in-trigger")?.click();
     } catch (err: any) {
       errorLoginHandler();
     }
@@ -64,7 +69,7 @@ const SignUp: FC = () => {
     onSuccess: async ({ access_token: googleToken }) => {
       try {
         const { accessToken, user, message } = await google(googleToken);
-        successfullyLoginHandler(message);
+        successfullyLoginHandler(user, accessToken, message);
       } catch (err: any) {}
     },
     onError: () => {
@@ -82,8 +87,17 @@ const SignUp: FC = () => {
   };
 
   const successfullyLoginHandler = (
-    message: string,
+    user: User,
+    accessToken: string,
+    message: string
   ) => {
+    setUser({
+      name: user.name,
+      id: user.id,
+      email: user.email,
+      image: user.avatar,
+    });
+    setAccessToken(accessToken);
     toast({
       title: "Success",
       description: message ?? "success to sign up",
