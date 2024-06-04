@@ -8,5 +8,5 @@ export interface Question {
     created_at: Date;
     updated_at: Date;
     options: Array<Option>;
-    answered?: boolean;
+    answer: string;
 }

@@ -1,3 +1,4 @@
+"use server"
 import { Transaction } from "@/models/payment";
 import { Tryout } from "@/models/tryout";
 import { serverAxios } from "@/utils/axios";
