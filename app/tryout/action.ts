@@ -1,3 +1,5 @@
+"use server"
+
 import { Tryout } from "@/models/tryout";
 import { serverAxios } from "@/utils/axios";
 import { cookies } from "next/headers";
@@ -11,7 +13,7 @@ export async function getListTryout(): Promise<{
     const { data } = await serverAxios.get<{
       tryouts: Tryout[];
       message: string;
-    }>("/api/tryout/data", {
+    }>("/api/db/tryout/data", {
       headers: {
         Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
       },

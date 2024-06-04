@@ -15,7 +15,7 @@ export async function signin(
       user: User;
       accessToken: string;
       message: string;
-    }>("/api/auth/login", { email, password });
+    }>("/api/db/auth/login", { email, password });
 
     cookies().set("accessToken", data.accessToken);
     cookies().set("userId", data.user.id);
@@ -54,7 +54,7 @@ export async function signup(
     const role_id = 2;
     const { data } = await serverAxios.post<{
       message: string;
-    }>("/api/auth/register", { email, password, name, role_id });
+    }>("/api/db/auth/register", { email, password, name, role_id });
 
     return data;
   } catch (error) {
