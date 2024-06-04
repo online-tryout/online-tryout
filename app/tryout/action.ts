@@ -16,12 +16,29 @@ export async function getListTryout(): Promise<{
         Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
       },
     });
-
-    console.log(data);
-
     return data;
   } catch (error) {
-    console.log(error);
+    throw error;
+  }
+}
+
+export async function getToDetail(id: string): Promise<{
+  tryout: Tryout;
+  message: string;
+}> {
+  "use server";
+  try {
+    const url = "/api/tryout/data/" + id;
+    const { data } = await serverAxios.get<{
+      tryout: Tryout;
+      message: string;
+    }>(url, {
+      headers: {
+        Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
+      },
+    });
+    return data;
+  } catch (error) {
     throw error;
   }
 }
