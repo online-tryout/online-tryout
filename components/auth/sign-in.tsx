@@ -96,7 +96,7 @@ const SignIn: FC = () => {
       description: message ?? "success to sign in",
       variant: "default",
     });
-    const redirect = decodeURIComponent(query.get("redirect") ?? "/dashboard");
+    const redirect = decodeURIComponent(query.get("redirect") ?? "/tryout");
     router.push(redirect);
   };
 
