@@ -38,12 +38,12 @@ const TryoutList: FC<TryOutListProps> = ({ tryouts }) => {
               <Card key={to.id}>
                 <CardHeader>
                   <CardTitle>{to.title}</CardTitle>
-                  <CardDescription>Rp{to.price}</CardDescription>
+                  <CardDescription>Rp{to.price.toLocaleString()}</CardDescription>
                 </CardHeader>
                 <CardContent></CardContent>
                 <CardFooter>
                   <Button size={"sm"} variant={"default"}>
-                    <Link href={`/tryout/${to.id}`}>Buy</Link>
+                    <Link href={`/payment/${to.id}`}>Buy</Link>
                   </Button>
                 </CardFooter>
               </Card>
